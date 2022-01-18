@@ -24,7 +24,6 @@ class AuthenticationActivity : AppCompatActivity() {
     }
 
     private val _viewModel : AuthenticationViewModel by viewModel()
-    //private val _viewModel by viewModels<AuthenticationViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
