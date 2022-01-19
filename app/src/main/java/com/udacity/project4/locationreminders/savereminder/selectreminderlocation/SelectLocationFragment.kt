@@ -2,41 +2,34 @@ package com.udacity.project4.locationreminders.savereminder.selectreminderlocati
 
 
 import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
-import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.NavHostFragment
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
+import com.udacity.project4.utils.isPermissionGranted
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.util.*
 
 class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
+
+    companion object{
+        val REQUEST_ACCESS_FINE_LOCATION_CODE = 9879
+    }
 
     //Use Koin to get the view model of the SaveReminder
     override val _viewModel: SaveReminderViewModel by inject()
@@ -63,8 +56,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        if (!isPermissionsGranted())
-            requestPermission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        requestPermissions()
 
         binding.btnSave.setOnClickListener { onLocationSelected() }
 
@@ -116,27 +108,40 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         else -> super.onOptionsItemSelected(item)
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        Timber.d("onRequestPermissionResult")
 
-    private val requestPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                googleMap?.let {
-                    setupGoogleMap(it)
-                }
-            } else {
-                _viewModel.showErrorMessage.value = getString(R.string.location_required_error)
+        if (
+            grantResults.isEmpty() ||
+            grantResults[0] == PackageManager.PERMISSION_DENIED
+        ) {
+            _viewModel.showErrorMessage.value = getString(R.string.location_required_error)
+        } else {
+            googleMap?.let {
+                setupGoogleMap(it)
             }
         }
+    }
 
+    private fun requestPermissions() {
+        if (!isPermissionGranted(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            val permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+            val resultCode = REQUEST_ACCESS_FINE_LOCATION_CODE
 
-    private fun isPermissionsGranted() = ContextCompat.checkSelfPermission(
-        requireContext(),
-        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-
+            requestPermissions(
+                permissionsArray,
+                resultCode
+            )
+        }
+    }
 
     private fun setupGoogleMap(map: GoogleMap)
     {
-        if (isPermissionsGranted()) {
+        if (isPermissionGranted(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             map.isMyLocationEnabled = true
             map.uiSettings?.isMyLocationButtonEnabled = true
 
