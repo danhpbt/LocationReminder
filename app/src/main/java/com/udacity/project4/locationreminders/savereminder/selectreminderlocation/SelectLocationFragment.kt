@@ -191,18 +191,21 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             map.clear()
             val snippet = String.format(
                 Locale.getDefault(),
-                "Lat: %1$.5f, Long: %2$.5f",
+                getString(R.string.lat_long_snippet),
                 latLng.latitude,
                 latLng.longitude
             )
-            map.addMarker(
+            val poiMarker = map.addMarker(
                 MarkerOptions()
                     .position(latLng)
                     .title(getString(R.string.dropped_pin))
                     .snippet(snippet)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
             )
-            selectedPOI = PointOfInterest(latLng, reminderSelectedLocationStr, getString(R.string.my_selected_location))
+
+            poiMarker.showInfoWindow()
+            selectedPOI = PointOfInterest(latLng, getString(R.string.my_selected_location),
+                getString(R.string.dropped_pin))
             reminderSelectedLocationStr = selectedPOI.name
         }
     }
