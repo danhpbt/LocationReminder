@@ -48,11 +48,10 @@ class RemindersListViewModelTest {
         dataSource.saveReminder(reminder)
 
         viewModel.loadReminders()
-
         val list = viewModel.remindersList.getOrAwaitValue()
-        assertThat(list,(not(nullValue())))
 
-        assertEquals(2,list.size)
+        assertThat(list,(not(nullValue())))
+        assertEquals(1,list.size)
     }
 
     @Test
