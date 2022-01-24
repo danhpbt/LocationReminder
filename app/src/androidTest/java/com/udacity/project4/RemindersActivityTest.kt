@@ -23,6 +23,7 @@ import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorActivity
 import com.udacity.project4.utils.EspressoIdlingResource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
@@ -131,9 +132,13 @@ class RemindersActivityTest :
             .check(matches(isDisplayed()))
         onView(withText("Description 1"))
             .check(matches(isDisplayed()))
+
+        runBlocking {
+            delay(3000)
+        }
     }
 
-    @Test
+    /*@Test
     fun addReminder_errorOnEnterTitle() {
         val scenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(scenario)
@@ -151,6 +156,6 @@ class RemindersActivityTest :
 
         onView(withId(com.google.android.material.R.id.snackbar_text))
             .check(matches(withText(R.string.err_enter_title)))
-    }
+    }*/
 
 }

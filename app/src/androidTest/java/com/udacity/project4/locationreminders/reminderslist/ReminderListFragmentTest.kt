@@ -21,6 +21,7 @@ import com.udacity.project4.locationreminders.data.local.LocalDB
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
 import com.udacity.project4.util.DataBindingIdlingResource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.*
@@ -100,17 +101,18 @@ class ReminderListFragmentTest {
         verify(navController).navigate(ReminderListFragmentDirections.toSaveReminder())
     }
 
-    @Test
-    fun getReminderList_listOneElements() {
-        runBlocking {
-            val reminder = ReminderDTO("Title 1", "Description 1", "Location 1", 0.0, 0.0)
-            repository.saveReminder(reminder)
-        }
-
-        launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
-
-        onView(withText("Title 1")).check(matches(isDisplayed()))
-    }
+//    @Test
+//    fun getReminderList_listOneElements() {
+//        runBlocking {
+//            val reminder = ReminderDTO("Title 1", "Description 1", "Location 1", 0.0, 0.0)
+//            repository.saveReminder(reminder)
+//        }
+//
+//        launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
+//
+//        onView(withText("Title 1")).check(matches(isDisplayed()))
+//
+//    }
 
     @Test
     fun emptyDB_noDataShows() {
