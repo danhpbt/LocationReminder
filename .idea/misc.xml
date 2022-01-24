@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/MyProjects/AndroidDev/Kotlin/Udacity/Part5_GoogleMap/nd940-android-kotlin-c4-starter-master/starter/app/src/main/res/layout/activity_authentication.xml" value="0.176" />
+        <entry key="..\:/MyProjects/AndroidDev/Kotlin/Udacity/Part5_GoogleMap/nd940-android-kotlin-c4-starter-master/starter/app/src/main/res/layout/activity_reminder_description.xml" value="0.264" />
         <entry key="..\:/MyProjects/AndroidDev/Kotlin/Udacity/Part5_GoogleMap/nd940-android-kotlin-c4-starter-master/starter/app/src/main/res/layout/custom_firebase_signin.xml" value="0.2" />
         <entry key="..\:/MyProjects/AndroidDev/Kotlin/Udacity/Part5_GoogleMap/nd940-android-kotlin-c4-starter-master/starter/app/src/main/res/layout/fragment_reminders.xml" value="0.14791666666666667" />
         <entry key="..\:/MyProjects/AndroidDev/Kotlin/Udacity/Part5_GoogleMap/nd940-android-kotlin-c4-starter-master/starter/app/src/main/res/layout/fragment_save_reminder.xml" value="0.2" />
