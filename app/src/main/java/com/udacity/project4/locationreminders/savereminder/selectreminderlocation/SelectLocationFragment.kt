@@ -72,7 +72,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             _viewModel.navigationCommand.value = NavigationCommand.Back
         }
         else
-            _viewModel.showToast.value = getString(R.string.err_select_location)
+            _viewModel.showToast.postValue(getString(R.string.err_select_location))
 
     }
 
@@ -119,7 +119,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             grantResults.isEmpty() ||
             grantResults[0] == PackageManager.PERMISSION_DENIED
         ) {
-            _viewModel.showErrorMessage.value = getString(R.string.location_required_error)
+            _viewModel.showErrorMessage.postValue(getString(R.string.location_required_error))
         } else {
             googleMap?.let {
                 setupGoogleMap(it)
