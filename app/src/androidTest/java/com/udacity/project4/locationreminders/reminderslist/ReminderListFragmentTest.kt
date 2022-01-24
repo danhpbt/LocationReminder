@@ -90,23 +90,25 @@ class ReminderListFragmentTest {
     fun clickOnFAB_navigatesToSaveReminderFragment() {
         val scenario = launchFragmentInContainer<ReminderListFragment>(Bundle(),R.style.AppTheme)
         val navController = mock(NavController::class.java)
+
         scenario.onFragment {
             Navigation.setViewNavController(it.view!!,navController)
         }
-        onView(withId(R.id.addReminderFAB))
-            .perform(click())
+
+        onView(withId(R.id.addReminderFAB)).perform(click())
+
         verify(navController).navigate(ReminderListFragmentDirections.toSaveReminder())
     }
 
     @Test
     fun getReminderList_listOneElements() {
-        val reminder = ReminderDTO("Title 1", "Description 1", "Location 1", 0.0, 0.0)
-
         runBlocking {
+            val reminder = ReminderDTO("Title 1", "Description 1", "Location 1", 0.0, 0.0)
             repository.saveReminder(reminder)
         }
 
-        // THEN - UI shows both Reminders
+        launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
+
         onView(withText("Title 1")).check(matches(isDisplayed()))
     }
 
@@ -116,7 +118,8 @@ class ReminderListFragmentTest {
             repository.deleteAllReminders()
         }
 
-        // THEN - UI shows noDataSymbol
+        launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
+
         onView(withId(R.id.noDataTextView)).check(matches(isDisplayed()))
     }
 }
