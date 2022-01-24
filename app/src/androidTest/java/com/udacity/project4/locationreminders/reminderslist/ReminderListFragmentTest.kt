@@ -101,18 +101,18 @@ class ReminderListFragmentTest {
         verify(navController).navigate(ReminderListFragmentDirections.toSaveReminder())
     }
 
-//    @Test
-//    fun getReminderList_listOneElements() {
-//        runBlocking {
-//            val reminder = ReminderDTO("Title 1", "Description 1", "Location 1", 0.0, 0.0)
-//            repository.saveReminder(reminder)
-//        }
-//
-//        launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
-//
-//        onView(withText("Title 1")).check(matches(isDisplayed()))
-//
-//    }
+    @Test
+    fun getReminderList_listOneElements() {
+        runBlocking {
+            val reminder = ReminderDTO("Title 1", "Description 1", "Location 1", 0.0, 0.0)
+            repository.saveReminder(reminder)
+        }
+
+        launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
+
+        onView(withText("Title 1")).check(matches(isDisplayed()))
+
+    }
 
     @Test
     fun emptyDB_noDataShows() {
