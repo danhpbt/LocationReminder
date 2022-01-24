@@ -119,6 +119,8 @@ class RemindersActivityTest :
         val scenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(scenario)
 
+        val activity = getActivity(scenario)
+
         onView(withId(R.id.noDataTextView))
             .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
@@ -131,65 +133,42 @@ class RemindersActivityTest :
         onView(withId(R.id.reminderDescription))
             .perform(ViewActions.typeText("Description 1"))
 
-        Espresso.pressBack()
+        Espresso.closeSoftKeyboard()
         onView(withId(R.id.saveReminder)).perform(ViewActions.click())
 
-        runBlocking {
-            delay(3000)
-        }
+        onView(withText(R.string.reminder_saved)).inRoot(withDecorView(not(`is`(activity?.window?.decorView))))
+            .check(
+                matches(
+                    isDisplayed()
+                )
+            )
 
-//        val activity = getActivity(scenario)
-//
-//        onView(withText(R.string.reminder_saved))
-//            .inRoot(withDecorView(not(`is`(activity!!.window.decorView))))
-//            .check(matches(ViewMatchers.isDisplayed()))
-//
-//        onView(withText("Title 1"))
-//            .check(matches(isDisplayed()))
-//
-//        scenario.close()
-//
-
-//        runBlocking {
-//            delay(3000)
-//        }
-//
-//        onView(withText("Title")).check(matches(isDisplayed()))
-
-//        var decorView: View? = null
-//        scenario.onActivity {
-//            decorView = it.window.decorView
-//        }
-//
-//        onView(withText(R.string.reminder_saved))
-//            .inRoot(withDecorView(not(decorView)))
-//            .check(matches(isDisplayed()))
-//
-//        onView(withText("Title 1"))
-//            .check(matches(isDisplayed()))
-//        onView(withText("Description 1"))
-//            .check(matches(isDisplayed()))
+        onView(withText("Title 1")).check(matches(isDisplayed()))
 
     }
 
     @Test
     fun addReminder_errorOnEnterTitle() {
-//        val scenario = ActivityScenario.launch(RemindersActivity::class.java)
-//        dataBindingIdlingResource.monitorActivity(scenario)
-//
-//        onView(withId(R.id.noDataTextView))
-//            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-//        onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
-//        onView(withId(R.id.selectLocation)).perform(ViewActions.click())
-//
-//        onView(withId(R.id.mapFragment)).perform(ViewActions.click())
-//        onView(withId(R.id.btn_save)).perform(ViewActions.click())
-//
-//        Espresso.closeSoftKeyboard()
-//        onView(withId(R.id.saveReminder)).perform(ViewActions.click())
-//
-//        onView(withId(com.google.android.material.R.id.snackbar_text))
-//            .check(matches(withText(R.string.err_enter_title)))
+        val scenario = ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(scenario)
+
+        onView(withId(R.id.noDataTextView))
+            .check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
+        onView(withId(R.id.selectLocation)).perform(ViewActions.click())
+
+        onView(withId(R.id.mapFragment)).perform(ViewActions.longClick())
+        onView(withId(R.id.btn_save)).perform(ViewActions.click())
+
+        Espresso.closeSoftKeyboard()
+        onView(withId(R.id.saveReminder)).perform(ViewActions.click())
+
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+            .check(matches(withText(R.string.err_enter_title)))
+
+        runBlocking {
+            delay(3000)
+        }
     }
 
 }
