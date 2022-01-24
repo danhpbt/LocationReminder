@@ -2,7 +2,6 @@ package com.udacity.project4.authentication
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.firebase.ui.auth.AuthMethodPickerLayout
