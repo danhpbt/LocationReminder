@@ -12,8 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.instanceOf
+import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.*
 import org.junit.runner.RunWith
@@ -67,7 +66,18 @@ class RemindersLocalRepositoryTest {
 
         val result = remindersLocalRepository.getReminder(reminder.id) as Result.Success
 
-        assertThat(result.data, `is`(CoreMatchers.notNullValue()))
+        assertThat(result.data, `is`(notNullValue()))
+    }
+
+    @Test
+    fun getReminder_error() = runBlocking {
+        val reminder = ReminderDTO("Title","Description",
+            "location",0.0,0.0)
+
+        val result = remindersLocalRepository.getReminder(reminder.id) as Result.Error
+
+        assertThat(result.message, `is`("Reminder not found!"))
+        assertThat(result.statusCode, `is`(nullValue()))
     }
 
     @Test

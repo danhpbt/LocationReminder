@@ -6,16 +6,19 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SmallTest;
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
+import com.udacity.project4.locationreminders.data.dto.Result
 import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
+import junit.framework.Assert.assertEquals
 
 import org.junit.runner.RunWith;
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.*
+import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -68,6 +71,16 @@ class RemindersDaoTest {
     }
 
     @Test
+    fun getReminder_error() = runBlocking {
+        val reminder = ReminderDTO("Title","Description",
+            "location",0.0,0.0)
+
+        val result = remindersDao.getReminderById(reminder.id)
+
+        assertThat(result, `is`(nullValue()))
+    }
+
+    @Test
     fun deleteAll_success() = runBlockingTest {
         val reminder = ReminderDTO("Title","Description",
             "location",0.0,0.0)
@@ -75,7 +88,7 @@ class RemindersDaoTest {
         remindersDao.saveReminder(reminder)
 
         remindersDao.deleteAllReminders()
-        Assert.assertEquals(0, remindersDao.getReminders().size)
+        assertEquals(0, remindersDao.getReminders().size)
     }
 
 }
