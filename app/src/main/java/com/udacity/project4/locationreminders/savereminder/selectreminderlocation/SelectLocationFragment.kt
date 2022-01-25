@@ -58,6 +58,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         requestPermissions()
 
+        binding.btnSave.isEnabled = false
         binding.btnSave.setOnClickListener { onLocationSelected() }
 
         return binding.root
@@ -142,6 +143,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private fun setupGoogleMap(map: GoogleMap)
     {
         if (isPermissionGranted(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+            binding.btnSave.isEnabled = true
+
             map.isMyLocationEnabled = true
             map.uiSettings?.isMyLocationButtonEnabled = true
 
